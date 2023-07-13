@@ -1,1 +1,17 @@
+<header>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>
+        Product Mart
+      </span>
+      <a mat-stroked-button
+         routerLink="/"
+         routerLinkActive="active-link"
+         [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a mat-stroked-button
+         routerLink="/products"
+         routerLinkActive="active-link">Products</a>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>
 <router-outlet></router-outlet>
