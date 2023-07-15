@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Subject, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 
 export interface User {
-  email: string,
-  fullname: string,
-  password: string,
+  email: string;
+  fullname: string;
+  password: string;
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private user$ = new Subject<User>();
 
-  constructor() { }
+  constructor() {}
 
   login(email: string, password: string) {
-    console.log('login credentials: ', {email, password})
-    return of({email, password});
+    console.log('login credentials: ', { email, password });
+    return of({ email, password });
   }
 
   get user() {
