@@ -1,0 +1,26 @@
+.login-card {
+  width: 400px;
+  margin: 10% auto;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+mat-card-content form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
