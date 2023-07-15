@@ -12,7 +12,9 @@
                matInput
                placeholder="Full Name"
                required>
+        <mat-error *ngIf="userForm.controls['fullname'].hasError('required')">Full name is required</mat-error>
       </mat-form-field>
+
       <mat-form-field>
         <input name="email"
                formControlName="email"
@@ -20,7 +22,11 @@
                placeholder="Email"
                required
                type="email">
+        <mat-error *ngIf="userForm.controls['email'].hasError('email')">Invalid Email</mat-error>
+        <mat-error *ngIf="userForm.controls['email'].hasError('required')">Email is required</mat-error>
       </mat-form-field>
+
+
       <mat-form-field>
         <input name="password"
                formControlName="password"
@@ -28,12 +34,26 @@
                placeholder="Password"
                required
                type="password">
+        <mat-error *ngIf="userForm.controls['password'].hasError('required')">Password is required</mat-error>
       </mat-form-field>
+
+      <mat-form-field>
+        <input name="repeatPassword"
+               formControlName="repeatPassword"
+               matInput
+               placeholder="Confirm Password"
+               required
+               type="password">
+        <mat-error *ngIf="userForm.controls['repeatPassword'].hasError('required')">Confirm password is
+          required</mat-error>
+      </mat-form-field>
+      <mat-error *ngIf="userForm.hasError('passwordMatch')">Passwords aren't matched</mat-error>
     </form>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button
             color="primary"
+            [disabled]="userForm.invalid"
             (click)="register()">
       Register
     </button>
