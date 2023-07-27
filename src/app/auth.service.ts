@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Subject, of } from 'rxjs';
+import { Subject, catchError, of, switchMap, throwError } from 'rxjs';
+
+import { environment } from 'src/environments/environment.development';
 
 import { User } from './user.interface';
 
@@ -9,8 +12,9 @@ import { User } from './user.interface';
 })
 export class AuthService {
   private user$ = new Subject<User>();
+  private apiUri = environment.apiUri;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   login(email: string, password: string) {
     const loginCredentials = { email, password };
@@ -29,11 +33,23 @@ export class AuthService {
   }
 
   register(user: any) {
-    // make an api call to save user in db
-    // update the user subject
-    this.setUser(user);
-    console.log('registered user successfully', user);
-    return of(user);
+    return this.http.post<User>(`${this.apiUri}/register`, user).pipe(
+      switchMap((savedUser) => {
+        this.setUser(savedUser);
+        console.log('user registered successfully', savedUser);
+        return of(savedUser);
+      }),
+      catchError((e) => {
+        console.log('server error occurred', e);
+        return throwError(() => e);
+      })
+    );
+
+    // // make an api call to save user in db
+    // // update the user subject
+    // this.setUser(user);
+    // console.log('registered user successfully', user);
+    // return of(user);
   }
 
   private setUser(user: any) {
