@@ -8,4 +8,5 @@ module.exports = {
     // port: process.env.MONGO_PORT,
     isDebug: process.env.MONGOOSE_DEBUG,
   },
+  jwtSecret: process.env.JWT_SECRET,
 };
