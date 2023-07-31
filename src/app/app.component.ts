@@ -14,6 +14,7 @@ export class AppComponent {
   user!: User;
 
   constructor(private authService: AuthService, private router: Router) {
+    this.authService.findMe().subscribe((user) => (this.user = user));
     this.authService.user
       .pipe(takeUntilDestroyed())
       .subscribe((user) => (this.user = user));
