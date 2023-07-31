@@ -17,14 +17,14 @@ export class LoginComponent {
 
   login() {
     this.error = '';
-    this.authService.login(this.email, this.password).subscribe(
-      (user) => {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (user) => {
         console.log('user: ', user);
         this.router.navigate(['/']);
       },
-      (error) => {
+      error: (error) => {
         this.error = error.message;
-      }
-    );
+      },
+    });
   }
 }
