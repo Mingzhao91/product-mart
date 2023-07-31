@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Subject, catchError, of, switchMap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, of, switchMap, throwError } from 'rxjs';
 
 import { environment } from 'src/environments/environment.development';
 
 import { User } from './user.interface';
+import { TokenStorageService } from './token-storage.service';
+
+interface UserDto {
+  user: User;
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +20,71 @@ export class AuthService {
   private user$ = new Subject<User>();
   private apiUri = environment.apiUri;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private tokenStorageService: TokenStorageService
+  ) {}
 
   login(email: string, password: string) {
     const loginCredentials = { email, password };
     console.log('login credentials: ', loginCredentials);
-    return this.http.post<User>(`${this.apiUri}/login`, loginCredentials).pipe(
-      switchMap((foundUser) => {
-        this.setUser(foundUser);
-        console.log(`user found: `, foundUser);
-        return of(foundUser);
+    return this.http
+      .post<UserDto>(`${this.apiUri}/login`, loginCredentials)
+      .pipe(
+        switchMap(({ user, token }) => {
+          this.setUser(user);
+          this.tokenStorageService.setToken(token);
+          console.log(`user found: `, user);
+          return of(user, token);
+        }),
+        catchError((error) => {
+          return throwError(() => {
+            console.log('login error: ', error);
+            return new Error(
+              `Your login details could not be verified. Please try again.`
+            );
+          });
+        })
+      );
+  }
+
+  logout() {
+    // remove token from localStorage
+    this.tokenStorageService.removeToken();
+    // remove user from subject
+    this.setUser(null);
+    console.log('user did logout successfully');
+  }
+
+  get user() {
+    return this.user$.asObservable();
+  }
+
+  register(userToSave: User) {
+    return this.http.post<UserDto>(`${this.apiUri}/register`, userToSave).pipe(
+      switchMap(({ user, token }) => {
+        this.setUser(user);
+        this.tokenStorageService.setToken(token);
+        console.log('user registered successfully', user);
+        return of(user);
+      }),
+      catchError((e) => {
+        console.log('server error occurred', e);
+        return throwError(() => e);
+      })
+    );
+  }
+
+  findMe() {
+    const token = this.tokenStorageService.getToken();
+    if (!token) {
+      return EMPTY;
+    }
+    return this.http.get<User>(`${this.apiUri}/findme`).pipe(
+      switchMap((user) => {
+        this.setUser(user);
+        console.log(`user found: `, user);
+        return of(user);
       }),
       catchError((error) => {
         return throwError(() => {
@@ -34,36 +95,6 @@ export class AuthService {
         });
       })
     );
-  }
-
-  logout() {
-    // remove user from subject
-    this.setUser(null);
-    console.log('user did logout successfully');
-  }
-
-  get user() {
-    return this.user$.asObservable();
-  }
-
-  register(user: any) {
-    return this.http.post<User>(`${this.apiUri}/register`, user).pipe(
-      switchMap((savedUser) => {
-        this.setUser(savedUser);
-        console.log('user registered successfully', savedUser);
-        return of(savedUser);
-      }),
-      catchError((e) => {
-        console.log('server error occurred', e);
-        return throwError(() => e);
-      })
-    );
-
-    // // make an api call to save user in db
-    // // update the user subject
-    // this.setUser(user);
-    // console.log('registered user successfully', user);
-    // return of(user);
   }
 
   private setUser(user: any) {
