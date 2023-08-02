@@ -11,7 +11,10 @@ const localLogin = new LocalStrategy(
     usernameField: "email",
   },
   async (email, password, done) => {
-    const user = userController.getUserByEmailIdAndPassword(email, password);
+    const user = await userController.getUserByEmailIdAndPassword(
+      email,
+      password
+    );
     return user
       ? done(null, user)
       : done(null, false, {
