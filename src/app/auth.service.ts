@@ -35,7 +35,7 @@ export class AuthService {
           this.setUser(user);
           this.tokenStorageService.setToken(token);
           console.log(`user found: `, user);
-          return of(user, token);
+          return of(user);
         }),
         catchError((error) => {
           return throwError(() => {
@@ -80,8 +80,8 @@ export class AuthService {
     if (!token) {
       return EMPTY;
     }
-    return this.http.get<User>(`${this.apiUri}/findme`).pipe(
-      switchMap((user) => {
+    return this.http.get<UserDto>(`${this.apiUri}/findme`).pipe(
+      switchMap(({ user }) => {
         this.setUser(user);
         console.log(`user found: `, user);
         return of(user);
