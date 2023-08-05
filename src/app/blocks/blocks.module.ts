@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BlocksRoutingModule } from './blocks-routing.module';
-import { SharedModule } from '../shared/shared.module';
+import { BlocksRoutingModule } from '@blocks/blocks-routing.module';
+import { SharedModule } from '@shared/shared.module';
 
-import { HeaderComponent } from './header/header.component';
-import { AppComponent } from './root/app.component';
+import { HeaderComponent } from '@blocks/header/header.component';
+import { AppComponent } from '@blocks/root/app.component';
 
 @NgModule({
   declarations: [HeaderComponent, AppComponent],

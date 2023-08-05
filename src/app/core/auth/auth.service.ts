@@ -5,8 +5,8 @@ import { EMPTY, Subject, catchError, of, switchMap, throwError } from 'rxjs';
 
 import { environment } from 'src/environments/environment.development';
 
-import { User } from './core/user.interface';
-import { TokenStorageService } from './core/auth/token-storage.service';
+import { User } from '@core/user.interface';
+import { TokenStorageService } from '@core/auth/token-storage.service';
 
 interface UserDto {
   user: User;

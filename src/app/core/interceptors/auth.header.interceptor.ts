@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { TokenStorageService } from '../auth/token-storage.service';
+import { TokenStorageService } from '@core/auth/token-storage.service';
 
 @Injectable()
 export class AuthHeaderInterceptorService implements HttpInterceptor {
