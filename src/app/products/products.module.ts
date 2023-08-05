@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsComponent } from './products/products.component';
-import { MaterialModule } from '../material.module';
+import { MaterialModule } from '../shared/material.module';
 
 @NgModule({
   declarations: [ProductsComponent],
