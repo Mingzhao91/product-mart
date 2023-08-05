@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { AuthService } from './auth.service';
-import { User } from './user.interface';
+import { AuthService } from 'src/app/auth.service';
+import { User } from 'src/app/user.interface';
 
 @Component({
   selector: 'app-root',
