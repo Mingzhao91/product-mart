@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User } from '../../user.interface';
+import { User } from '../../core/user.interface';
 import { AuthService } from '../../auth.service';
 
 @Component({
