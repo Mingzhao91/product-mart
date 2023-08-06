@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { EMPTY, Subject, catchError, of, switchMap, throwError } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 
 import { environment } from 'src/environments/environment.development';
 

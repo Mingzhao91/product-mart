@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   exports: [
@@ -19,6 +21,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatIconModule,
     MatMenuModule,
     MatGridListModule,
+    MatSidenavModule,
+    MatListModule,
   ],
 })
 export class MaterialModule {}

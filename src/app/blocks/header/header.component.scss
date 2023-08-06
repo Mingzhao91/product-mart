@@ -1,0 +1,41 @@
+a {
+  margin: 2px;
+}
+
+.logo {
+  background-image: url("../../../assets/logo.png");
+  min-height: 50px;
+  min-width: 50px;
+  vertical-align: middle;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 0.2em;
+  margin: 0px;
+  padding: 0px;
+}
+
+.title {
+  margin-left: 0.2em;
+}
+
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+.display-below-small {
+  display: none;
+}
+
+.display-above-small {
+  display: flex;
+}
+
+@media screen and (max-width: 490px) {
+  .display-below-small {
+    display: block;
+  }
+
+  .display-above-small {
+    display: none;
+  }
+}
