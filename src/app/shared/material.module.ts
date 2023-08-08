@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   exports: [
@@ -29,6 +30,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatPaginatorModule,
   ],
 })
 export class MaterialModule {}
