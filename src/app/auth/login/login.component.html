@@ -24,7 +24,7 @@
       </mat-form-field>
     </form>
 
-    <mat-error *ngIf="error">{{error}}</mat-error>
+    <mat-error *ngIf="error$ | async">{{error$ | async}}</mat-error>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button
