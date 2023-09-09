@@ -4,6 +4,6 @@ export interface CartState {
   cartItems: CartItem[];
 }
 
-export const initialState = {
+export const initialState: CartState = {
   cartItems: [],
 };
