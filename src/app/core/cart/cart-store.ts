@@ -32,7 +32,7 @@ export class CartStore extends Store<CartState> {
     const newState: CartState = {
       ...this.state,
       cartItems: this.state.cartItems.filter(
-        (cartItem) => cartItem.productId !== cartItemToRemove.productId
+        (cartItem) => cartItem.id !== cartItemToRemove.id
       ),
     };
 
@@ -43,9 +43,7 @@ export class CartStore extends Store<CartState> {
     const newState: CartState = {
       ...this.state,
       cartItems: this.state.cartItems.map((cartItem) =>
-        cartItem.productId === cartItemToUpdate.productId
-          ? cartItemToUpdate
-          : cartItem
+        cartItem.id === cartItemToUpdate.id ? cartItemToUpdate : cartItem
       ),
     };
 

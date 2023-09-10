@@ -13,7 +13,7 @@ describe('Cart Store Selectors', () => {
 
     given(() => {
       const tenApples: CartItem = {
-        productId: 1,
+        id: 1,
         quantity: 10,
         imgUrl: 'img/apple',
         itemTotal: 20,
@@ -22,7 +22,7 @@ describe('Cart Store Selectors', () => {
       };
 
       const fiveOranges: CartItem = {
-        productId: 1,
+        id: 1,
         quantity: 5,
         imgUrl: 'img/orange',
         itemTotal: 20,
