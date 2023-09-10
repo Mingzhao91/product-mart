@@ -5,9 +5,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from './material.module';
 
+import { AddToCartComponent } from './cart/add-to-cart/add-to-cart.component';
+import { CartItemsCountComponent } from './cart/cart-items-count/cart-items-count.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [AddToCartComponent, CartItemsCountComponent],
   imports: [CommonModule, RouterModule, MaterialModule],
-  exports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterModule],
+  exports: [
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CartItemsCountComponent,
+  ],
 })
 export class SharedModule {}
