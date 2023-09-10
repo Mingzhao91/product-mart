@@ -1,1 +1,34 @@
-<p>cart-summary works!</p>
+<mat-card class="sc-checkout">
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item role="listitem">
+        <div class="item">
+          <span> Items ({{cartItemsCount|async}})</span>
+          <span> {{cartSubTotal|async|currency:"GBP"}}</span>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item role="listitem">
+        <div class="item">
+          <span> Shipping to 08902 </span>
+          <span> {{shippingCost|async| currency:"GBP"}}</span>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item role="listitem">
+        <div class="item">
+          <span> Estimated tax </span>
+          <span> {{estimatedTax|async| currency:"GBP"}}</span>
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+
+      <mat-list-item role="listitem">
+        <div class="item">
+          <span class="mat-title"> Order Total </span>
+          <span class="mat-title"> {{orderTotal|async| currency:"GBP"}}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
