@@ -17,6 +17,7 @@ import { CartItemsCountComponent } from './cart/cart-items-count/cart-items-coun
     ReactiveFormsModule,
     RouterModule,
     CartItemsCountComponent,
+    AddToCartComponent,
   ],
 })
 export class SharedModule {}
