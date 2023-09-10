@@ -28,7 +28,7 @@ export const getShippingCost = createSelector(
   (subTotal) => subTotal * SHIPPING
 );
 
-const TAX = 0.02;
+const TAX = 0.2;
 export const getEstimatedTax = createSelector(
   getCartSubTotal,
   (subTotal) => subTotal * TAX
