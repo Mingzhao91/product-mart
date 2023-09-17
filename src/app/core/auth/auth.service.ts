@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import {
+  BehaviorSubject,
   EMPTY,
-  Observable,
-  Subject,
   catchError,
   of,
   switchMap,
@@ -25,13 +24,17 @@ interface UserDto {
   providedIn: 'root',
 })
 export class AuthService {
-  private user$ = new Subject<User>();
+  private user$ = new BehaviorSubject<User | null>(null);
   private apiUri = environment.apiUri;
 
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService
   ) {}
+
+  get isUserLoggedIn() {
+    return this.user$.value !== null;
+  }
 
   login(email: string, password: string) {
     const loginCredentials = { email, password };

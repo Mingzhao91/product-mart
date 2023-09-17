@@ -13,7 +13,7 @@ import { User } from '@core/user.interface';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  user!: Observable<User>;
+  user!: Observable<User | null>;
 
   constructor(
     private authService: AuthService,
