@@ -3,6 +3,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Observable } from 'rxjs';
 
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
+
 import { CartStore } from '@core/cart/cart-store';
 import {
   ALLOWED_PRODUCT_QUANTITIES,
@@ -10,6 +17,8 @@ import {
 } from '@core/cart/cart.service';
 import { Product } from '@core/products/product';
 import { getIsItemAlreadyInCart } from '@core/cart/cart-selector';
+import { CartItem } from '@core/cart/cart-item';
+import { AddToCartDialogComponent } from '../add-to-cart-dialog/add-to-cart-dialog.component';
 
 @Component({
   selector: 'app-add-to-cart',
@@ -25,7 +34,8 @@ export class AddToCartComponent {
   constructor(
     private destroyRef: DestroyRef,
     private cartStore: CartStore,
-    private cartService: CartService
+    private cartService: CartService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -41,7 +51,16 @@ export class AddToCartComponent {
       .addToCart(this.product, this.quantity)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((cartItem) => {
-        console.log('added to cart', cartItem);
+        this.openDialog(cartItem);
       });
+  }
+
+  openDialog(cartItem: CartItem) {
+    const dialogRef = this.dialog.open(AddToCartDialogComponent, {
+      width: '350px',
+      height: '250px',
+      data: { cartItem },
+      disableClose: true,
+    });
   }
 }

@@ -1,0 +1,25 @@
+<div mat-dialog-container>
+  <h1 mat-dialog-title>{{cartItem.quantity}} item/s added to cart</h1>
+  <div mat-dialog-content>
+    <div class="dialog-row">
+      <img mat-card-image
+           src="{{cartItem.imgUrl}}"
+           alt="{{cartItem.name}}"
+           class="product-listing-image">
+      <span class="mat-caption">
+        {{cartItem.name}} {{cartItem.itemTotal|currency:'GBP'}}
+      </span>
+    </div>
+
+    <div class="dialog-row">
+      <button mat-raised-button
+              [tabIndex]="0"
+              color="primary"
+              (click)="continueShopping()">Continue Shopping</button>
+
+      <button mat-raised-button
+              color="accent"
+              (click)="goToCart()">Go To Cart</button>
+    </div>
+  </div>
+</div>

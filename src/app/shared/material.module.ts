@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   exports: [
@@ -35,6 +36,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatPaginatorModule,
     MatSelectModule,
     MatBadgeModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule {}
