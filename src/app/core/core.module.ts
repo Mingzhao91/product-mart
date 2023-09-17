@@ -6,7 +6,7 @@ import { CoreRoutingModule } from '@core/core-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { throwIfAlradyLoaded } from '@core/utils/module-import-guard';
-import { AuthHeaderInterceptorService } from '@core/interceptors/auth.header.interceptor';
+import { AuthHeaderInterceptorService } from '@core/interceptors/auth-header.interceptor';
 
 @NgModule({
   declarations: [],
