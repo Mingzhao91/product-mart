@@ -29,12 +29,10 @@ export class ShoppingCartComponent {
   }
 
   updateCartItem({ value }: { value: number }, cartItem: CartItem) {
-    console.log('Attempting to update quantity from cart page');
     this.cartService.updateCart({ ...cartItem, quantity: value });
   }
 
   removeCartItem(cartItem: CartItem) {
-    console.log('Attempting to remove item from cart page');
     this.cartService.removeCartItem(cartItem);
   }
 }
