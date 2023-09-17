@@ -51,10 +51,6 @@ export class AuthService {
           this.setUser(user);
           this.tokenStorageService.setToken(token);
           console.log(`user found: `, user);
-          console.log(
-            'this.redirectUrlAfterLogin: ',
-            this.redirectUrlAfterLogin
-          );
           return of(this.redirectUrlAfterLogin);
         }),
         catchError((error) => {
@@ -83,10 +79,8 @@ export class AuthService {
   register(userToSave: User) {
     return this.http.post<UserDto>(`${this.apiUri}/register`, userToSave).pipe(
       switchMap(({ user, token }) => {
-        this.setUser(user);
-        this.tokenStorageService.setToken(token);
         console.log('user registered successfully', user);
-        return of(user);
+        return this.setUserAfterUserFoundFromServer(user, token);
       }),
       catchError((e) => {
         console.log('server error occurred', e);
@@ -101,10 +95,9 @@ export class AuthService {
       return EMPTY;
     }
     return this.http.get<UserDto>(`${this.apiUri}/findme`).pipe(
-      switchMap(({ user }) => {
-        this.setUser(user);
+      switchMap(({ user, token }) => {
         console.log(`user found: `, user);
-        return of(user);
+        return this.setUserAfterUserFoundFromServer(user, token);
       }),
       catchError((error) => {
         return throwError(() => {
@@ -117,7 +110,18 @@ export class AuthService {
     );
   }
 
+  private setUserAfterUserFoundFromServer(user: User, token: string) {
+    this.setUser(user);
+    this.tokenStorageService.setToken(token);
+    return of(user);
+  }
+
   private setUser(user: any) {
-    this.user$.next(user);
+    if (user) {
+      const newUser = { ...user, id: user._id };
+      this.user$.next(newUser);
+    } else {
+      this.user$.next(null);
+    }
   }
 }
