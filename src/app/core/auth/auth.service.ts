@@ -26,6 +26,7 @@ interface UserDto {
 export class AuthService {
   private user$ = new BehaviorSubject<User | null>(null);
   private apiUri = environment.apiUri;
+  private redirectUrlAfterLogin = '';
 
   constructor(
     private http: HttpClient,
@@ -34,6 +35,10 @@ export class AuthService {
 
   get isUserLoggedIn() {
     return this.user$.value !== null;
+  }
+
+  set redirectUrl(url: string) {
+    this.redirectUrlAfterLogin = url;
   }
 
   login(email: string, password: string) {
@@ -46,7 +51,11 @@ export class AuthService {
           this.setUser(user);
           this.tokenStorageService.setToken(token);
           console.log(`user found: `, user);
-          return of(user);
+          console.log(
+            'this.redirectUrlAfterLogin: ',
+            this.redirectUrlAfterLogin
+          );
+          return of(this.redirectUrlAfterLogin);
         }),
         catchError((error) => {
           return throwError(() => {

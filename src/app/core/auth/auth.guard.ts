@@ -1,11 +1,13 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from './auth.service';
 
-export const authGuard = () => {
+export const authGuard = (state: RouterStateSnapshot) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+
+  authService.redirectUrl = state.url.toString();
 
   if (authService.isUserLoggedIn) {
     return true;
