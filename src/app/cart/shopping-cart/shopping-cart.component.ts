@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 import { CartStore } from '@core/cart/cart-store';
 import { getCartItems, getCartItemsCount } from '@core/cart/cart-selector';
 import { CartItem } from '@core/cart/cart-item';
-import { ALLOWED_PRODUCT_QUANTITIES } from '@core/cart/cart.service';
+import {
+  ALLOWED_PRODUCT_QUANTITIES,
+  CartService,
+} from '@core/cart/cart.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -17,7 +20,7 @@ export class ShoppingCartComponent {
   availableQuantities!: number[];
   displayedColumns = ['imgUrl', 'name', 'price', 'quantity', 'remove'];
 
-  constructor(private cartStore: CartStore) {}
+  constructor(private cartStore: CartStore, private cartService: CartService) {}
 
   ngOnInit() {
     this.availableQuantities = ALLOWED_PRODUCT_QUANTITIES;
@@ -25,11 +28,13 @@ export class ShoppingCartComponent {
     this.cartItems = this.cartStore.select(getCartItems);
   }
 
-  updateCartItem($event: { value: number }, cartItem: CartItem) {
+  updateCartItem({ value }: { value: number }, cartItem: CartItem) {
     console.log('Attempting to update quantity from cart page');
+    this.cartService.updateCart({ ...cartItem, quantity: value });
   }
 
   removeCartItem(cartItem: CartItem) {
     console.log('Attempting to remove item from cart page');
+    this.cartService.removeCartItem(cartItem);
   }
 }
