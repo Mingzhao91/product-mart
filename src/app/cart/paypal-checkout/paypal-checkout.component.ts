@@ -2,13 +2,23 @@ import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { getOrderTotal } from '@core/cart/cart-selector';
-import { CartStore } from '@core/cart/cart-store';
-import { CartService } from '@core/cart/cart.service';
 import { environment } from 'src/environments/environment.development';
 
-declare let paypal: any;
+import {
+  getCartItems,
+  getCartItemsCount,
+  getCartSubTotal,
+  getEstimatedTax,
+  getOrderTotal,
+  getShippingCost,
+} from '@core/cart/cart-selector';
+import { CartStore } from '@core/cart/cart-store';
+import { CartService } from '@core/cart/cart.service';
+import { OrderService } from '@core/orders/order.service';
+import { CartItem } from '@core/cart/cart-item';
+import { combineLatest } from 'rxjs';
 
+declare let paypal: any;
 @Component({
   selector: 'app-paypal-checkout',
   templateUrl: './paypal-checkout.component.html',
@@ -16,23 +26,58 @@ declare let paypal: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaypalCheckoutComponent {
-  orderTotalToCharge!: number;
+  orderTotal: number = 0;
+  cartItems!: CartItem[];
+  shippingCost!: number;
+  itemsCount!: number;
+  orderSubTotal!: number;
+  estimatedTax!: number;
 
   constructor(
     private cartService: CartService,
+    private orderService: OrderService,
     private router: Router,
     private cartStore: CartStore,
     private destroyRef: DestroyRef
   ) {}
 
   ngOnInit() {
+    combineLatest([
+      this.cartStore.select(getOrderTotal),
+      this.cartStore.select(getCartItems),
+      this.cartStore.select(getShippingCost),
+      this.cartStore.select(getCartItemsCount),
+      this.cartStore.select(getEstimatedTax),
+      this.cartStore.select(getCartSubTotal),
+    ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
+        ([
+          orderTotal,
+          cartItems,
+          shippingCost,
+          itemsCount,
+          estimatedTax,
+          orderSubTotal,
+        ]: any) => {
+          console.log(`Order Total is `, orderTotal);
+          console.log(`Cart Items `, cartItems);
+          this.orderTotal = orderTotal;
+          this.cartItems = cartItems;
+          this.shippingCost = shippingCost;
+          this.itemsCount = itemsCount;
+          this.estimatedTax = estimatedTax;
+          this.orderSubTotal = orderSubTotal;
+        }
+      );
+
     // get order total
     this.cartStore
       .select<number>(getOrderTotal)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((orderTotal: number) => {
         console.log('total: ', orderTotal);
-        this.orderTotalToCharge = orderTotal;
+        this.orderTotal = orderTotal;
       });
     // render paypal button pass paypal configuration
     paypal.Button.render(this.paypalConfig, '#paypal-button-container');
@@ -52,7 +97,7 @@ export class PaypalCheckoutComponent {
             transactions: [
               {
                 amount: {
-                  total: this.orderTotalToCharge,
+                  total: this.orderTotal,
                   currency: 'GBP',
                 },
               },
@@ -63,8 +108,34 @@ export class PaypalCheckoutComponent {
       onAuthorize: async (data: any, actions: any) => {
         const payment = await actions.payment.execute();
         console.log(`The payment is successful`, payment);
-        this.cartService.clearCart();
-        this.router.navigate(['products']);
+
+        const { cart: cartId, id: paymentId } = payment;
+        const {
+          orderTotal,
+          cartItems,
+          shippingCost,
+          itemsCount,
+          estimatedTax,
+          orderSubTotal,
+        } = this;
+
+        this.orderService
+          .submitOrder({
+            cartId,
+            cartItems,
+            orderTotal,
+            paymentId,
+            shippingCost,
+            itemsCount,
+            estimatedTax,
+            orderSubTotal,
+          })
+          .subscribe((orderId) => {
+            console.log('Order created successfully', orderId);
+            console.log('redirecting to thank you page');
+            this.cartService.clearCart();
+            this.router.navigate(['products']);
+          });
       },
       onCancel: (data: any) => {
         console.log(`The payment is cancelled`, data);
