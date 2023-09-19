@@ -25,7 +25,7 @@ interface UserDto {
 })
 export class AuthService {
   private user$ = new BehaviorSubject<User | null>(null);
-  private apiUri = environment.apiUri;
+  private apiUri = environment.apiAuthUri;
   private redirectUrlAfterLogin = '';
 
   constructor(
@@ -35,6 +35,10 @@ export class AuthService {
 
   get isUserLoggedIn() {
     return this.user$.value !== null;
+  }
+
+  get loggedInUser() {
+    return this.user$.value;
   }
 
   set redirectUrl(url: string) {
